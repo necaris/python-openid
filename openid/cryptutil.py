@@ -102,10 +102,15 @@ except ImportError:
     def longToBinary(l):
         if l == 0:
             return '\x00'
+        encoded = pickle.encode_long(l)
+        if not isinstance(encoded, unicode):
+            encoded = unicode(encoded, encoding="utf-8")
 
-        return ''.join(reversed(pickle.encode_long(l)))
+        return ''.join(reversed(encoded))
 
     def binaryToLong(s):
+        if not isinstance(s, unicode):
+            s = unicode(s, encoding="utf-8")
         return pickle.decode_long(''.join(reversed(s)))
 else:
     # We have pycrypto
